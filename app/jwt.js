@@ -1,16 +1,5 @@
-const express = require("express");
 const jwt = require("express-jwt");
 const jwksRsa = require("jwks-rsa");
-
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
-
-// Create a new Express app
-const app = express();
-
-const cors = require('cors');
-app.use(cors());
 
 // Set up Auth0 configuration
 const authConfig = {
@@ -33,14 +22,4 @@ const checkJwt = jwt({
   algorithm: ["RS256"]
 });
 
-// Define an example endpoint that must be called with an access token
-app.get("/api/external", checkJwt, (req, res) => {
-  res.send({
-    msg: "Your Access Token was successfully validated!",
-    peers: [1, 2, 3],
-  });
-});
-
-// Start the app
-const port = process.env.PORT || 3001;
-app.listen(port, () => console.log(`API listening on ${port}.`));
+module.exports = checkJwt;
