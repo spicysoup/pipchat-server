@@ -5,12 +5,7 @@ module.exports = (server) => {
 
   io.on('connection', socket => {
         console.log('New connection');
-        io.emit('welcome', {message: 'Hello'});
-
-        socket.on('chat/start', (data) => {
-          console.log(data);
-          socket.emit('chat/invited', {message: data});
-        });
+        io.emit('welcome', {message: 'Hello', peers: Object.values(store.users)});
 
         socket.on('chat/message', (data) => {
           printObject(data);
@@ -22,6 +17,7 @@ module.exports = (server) => {
               store.sockets[id] = socket;
               console.log('New peer registered');
               printObject(store.users);
+              io.emit('welcome', {message: 'Hello', peers: Object.values(store.users)});
             }
           }
 
