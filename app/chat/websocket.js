@@ -24,7 +24,7 @@ module.exports = (server) => {
           const {self, peer, message} = data;
           if (self && peer && message) {
             console.log(`Relaying message to ${peer}`);
-            store.sockets[peer].emit('chat/message', {self, message});
+            store.sockets[peer].emit('chat/message', data);
           }
         });
       },
