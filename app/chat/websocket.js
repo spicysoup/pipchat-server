@@ -21,10 +21,11 @@ module.exports = (server) => {
             }
           }
 
-          const {self, peer, message, request} = data;
+          const {self, peer, message, request, id} = data;
           if (self && peer && (message || request)) {
             console.log(`Relaying message to ${peer}`);
             store.sockets[peer].emit('chat/message', data);
+            store.sockets[self].emit('chat/ack', {id});
           }
         });
       },
