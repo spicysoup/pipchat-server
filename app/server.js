@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === 'production') {
   require('./chat/websocket')(server);
   server.listen(port, () => console.log(`API listening on ${port}.`));
 } else {
-  require('./chat/websocket')(server);
   server = app.listen(port, () => console.log(`Local API listening on ${port}.`));
+  require('./chat/websocket')(server);
 }
 
