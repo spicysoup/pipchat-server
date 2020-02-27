@@ -14,6 +14,7 @@ module.exports = (server) => {
           if ('self' in data && !('peer' in data)) {
             const {self: id} = data;
             if (id in store.users) {
+              socket.pipchatID = id;
               store.sockets[id] = socket;
               console.log('New peer registered');
               printObject(store.users);
@@ -28,6 +29,16 @@ module.exports = (server) => {
             store.sockets[self].emit('chat/ack', {id});
           }
         });
+
+        socket.on('disconnect', (reason) => {
+          const { pipchatID } = socket;
+          console.log('Client disconnected', 'id', pipchatID);
+          delete store.users[pipchatID];
+          delete store.sockets[pipchatID];
+          printObject(store.sockets);
+
+          io.emit('welcome', {message: 'Hello', peers: Object.values(store.users)});
+        })
       },
   );
 };
